@@ -6,7 +6,7 @@
 #    By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:06:14 by ncarrera          #+#    #+#              #
-#    Updated: 2025/11/11 14:09:15 by ncarrera         ###   ########.fr        #
+#    Updated: 2025/11/11 14:32:21 by ncarrera         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,10 +36,11 @@ LC=\033[2K
 all: $(LIBFT_A) $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) -o $(NAME)
+	@$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) -o $(NAME)
 
 $(LIBFT_A):
-	@make -C $(LIBFT_DIR)
+	@printf "$(Cyan)Compiling: $(Purple)libft.a$(NC)\n"
+	@make -C $(LIBFT_DIR) -s
 
 %.o: %.c
 	@printf "$(Cyan)Compiling: $(Purple)$(notdir $<)$(NC)\n"
@@ -48,10 +49,12 @@ $(LIBFT_A):
 clean:
 	@printf "$(Red)Deleting: $(Purple)Minishell objs$(NC)\n"
 	@rm -f $(OBJS)
+	@make clean -C $(LIBFT_DIR) -s
 fclean: clean
 	@printf "$(Red)Deleting: $(Purple) Minishell$(NC)\n"
 	@rm -f $(NAME)
-re: clean all
+	@make fclean -C $(LIBFT_DIR) -s
+re: fclean all
 reclean:
 	@$(MAKE) fclean -s
 	@$(MAKE) all -s
