@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:03 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 13:17:10 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:48:46 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,10 @@ t_redir		*new_redir(t_redir_type type, char *file);
 /* Parser */
 t_command	*parse_input(char *line, t_minishell *shell);
 void		free_commands(t_command *cmds);
+char		*remove_quotes(char *arg);
+char		*get_expansion_val(char *arg, int *i, t_minishell *shell);
+char		*expand_variables(char *arg, t_minishell *shell);
+char		**resize_args(char **args, char *new_arg);
 
 /* Executor */
 void		execute_command(t_minishell *shell, t_command *cmd);
@@ -97,6 +101,7 @@ void		builtin_exit(t_minishell *shell, char **args);
 void		builtin_echo(t_minishell *shell, char **args);
 void		builtin_export(t_minishell *shell, char **args);
 void		builtin_unset(t_minishell *shell, char **args);
+int			env_var_exists(char *var, char **envp);
 
 /* Parser Utils */
 void		process_token_char(char c, t_parser_state *state, char *dest);
