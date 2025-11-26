@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:03 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 13:48:46 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 14:00:42 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,17 @@ char		**resize_args(char **args, char *new_arg);
 
 /* Executor */
 void		execute_command(t_minishell *shell, t_command *cmd);
+void		exec_child(t_command *cmd,
+				t_minishell *shell, int prev_fd, int *pip);
+void		handle_parent(int *prev_fd, int *pip);
+void		clean_empty_arg(t_command *cmd);
+void		exec_single_builtin(t_command *cmd, t_minishell *shell);
 char		*find_path(char *cmd, char **envp);
+
+/* Shell */
+void		process_line(char *line, t_minishell *shell);
+int			init_shell(t_minishell *shell, char **envp, int argc);
+void		loop_shell(t_minishell *shell);
 
 /* Builtins */
 int			is_builtin(char *cmd);

@@ -6,7 +6,7 @@
 #    By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:06:14 by ncarrera          #+#    #+#              #
-#    Updated: 2025/11/26 13:46:01 by ncarrera         ###   ########.fr        #
+#    Updated: 2025/11/26 14:00:57 by ncarrera         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,13 +22,15 @@ LDFLAGS = -lreadline -L./libft -lft
 LIBFT = libft/libft.a
 
 # Project sources
-SRCS = srcs/main.c  srcs/executor.c \
+SRCS = srcs/main.c \
 	   srcs/builtin/builtins_dirs.c srcs/builtin/builtins_envs.c \
-	   srcs/builtin/builtins_export.c srcs/builtin/builtins_rem_exit.c \
+	   srcs/builtin/builtins_export.c srcs/builtin/builtins_rem_ex.c \
 	   srcs/builtin/path_utils.c srcs/parsing/ft_parsing.c \
 	   srcs/parsing/parser_nodes.c srcs/parsing/parser_utils.c \
 	   srcs/parsing/parser.c srcs/parsing/redir_handler.c \
-	   srcs/executor_utils.c srcs/tokenizer.c srcs/executor_redirs.c
+	   srcs/execution/executor_pipe_wait.c srcs/execution/executor_redirs.c \
+	   srcs/execution/executor_utils.c srcs/execution/executor.c \
+	   srcs/shell/shell.c srcs/tokenizer.c
 OBJS = $(SRCS:.c=.o)
 
 # Colours
