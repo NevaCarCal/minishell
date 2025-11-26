@@ -6,20 +6,16 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 02:05:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 01:59:28 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:01:01 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	handle_heredoc(char *delimiter)
+static void	read_heredoc_loop(int fd, char *delimiter)
 {
 	char	*line;
-	int		fd;
 
-	fd = open(".heredoc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-		return (-1);
 	while (1)
 	{
 		line = readline("> ");
@@ -34,6 +30,16 @@ static int	handle_heredoc(char *delimiter)
 		ft_putstr_fd("\n", fd);
 		free(line);
 	}
+}
+
+static int	handle_heredoc(char *delimiter)
+{
+	int		fd;
+
+	fd = open(".heredoc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+		return (-1);
+	read_heredoc_loop(fd, delimiter);
 	close(fd);
 	fd = open(".heredoc_tmp", O_RDONLY);
 	unlink(".heredoc_tmp");

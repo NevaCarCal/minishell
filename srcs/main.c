@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:06 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 02:45:41 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:01:24 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,10 @@ static int	init_shell(t_minishell *shell, char **envp, int argc)
 	return (0);
 }
 
-int	main(int argc, char **argv, char **envp)
+static void	loop_shell(t_minishell *shell)
 {
-	char		*line;
-	t_minishell	shell;
+	char	*line;
 
-	(void)argv;
-	if (init_shell(&shell, envp, argc))
-		return (1);
-	setup_signals();
 	while (1)
 	{
 		line = readline("\001\033[1;35m\002minishell"
@@ -101,15 +96,26 @@ int	main(int argc, char **argv, char **envp)
 			printf("exit\n");
 			break ;
 		}
-		process_line(line, &shell);
+		process_line(line, shell);
 		if (g_signal != 0)
 		{
-			shell.exit_code = g_signal;
+			shell->exit_code = g_signal;
 			g_signal = 0;
 		}
-		if (shell.exit_loop)
+		if (shell->exit_loop)
 			break ;
 	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_minishell	shell;
+
+	(void)argv;
+	if (init_shell(&shell, envp, argc))
+		return (1);
+	setup_signals();
+	loop_shell(&shell);
 	rl_clear_history();
 	return (shell.exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:40:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 01:52:40 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:03:27 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ static int	get_operator_len(char *line)
 	return (1);
 }
 
+static void	update_quote_state(char c, t_parser_state *state)
+{
+	if (c == '\'' || c == '\"')
+	{
+		if (!state->in_quote)
+		{
+			state->in_quote = 1;
+			state->quote = c;
+		}
+		else if (state->in_quote && c == state->quote)
+			state->in_quote = 0;
+	}
+}
+
 static int	get_word_len(char *line)
 {
 	int				i;
@@ -42,16 +56,7 @@ static int	get_word_len(char *line)
 			break ;
 		if (ft_isspace(line[i]) && !state.in_quote)
 			break ;
-		if (line[i] == '\'' || line[i] == '\"')
-		{
-			if (!state.in_quote)
-			{
-				state.in_quote = 1;
-				state.quote = line[i];
-			}
-			else if (state.in_quote && line[i] == state.quote)
-				state.in_quote = 0;
-		}
+		update_quote_state(line[i], &state);
 		i++;
 	}
 	return (i);

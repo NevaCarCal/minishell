@@ -6,11 +6,27 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:50:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 02:55:09 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:02:58 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	should_copy_char(char c, int *in_quote, char *quote)
+{
+	if ((c == '\'' || c == '\"') && !*in_quote)
+	{
+		*in_quote = 1;
+		*quote = c;
+		return (0);
+	}
+	else if (*in_quote && c == *quote)
+	{
+		*in_quote = 0;
+		return (0);
+	}
+	return (1);
+}
 
 static char	*remove_quotes(char *arg)
 {
@@ -29,14 +45,7 @@ static char	*remove_quotes(char *arg)
 	quote = 0;
 	while (arg[i])
 	{
-		if ((arg[i] == '\'' || arg[i] == '\"') && !in_quote)
-		{
-			in_quote = 1;
-			quote = arg[i];
-		}
-		else if (in_quote && arg[i] == quote)
-			in_quote = 0;
-		else
+		if (should_copy_char(arg[i], &in_quote, &quote))
 			new[j++] = arg[i];
 		i++;
 	}
@@ -67,13 +76,54 @@ static char	*get_env_val(char *var, t_minishell *shell)
 	return (ft_strdup(""));
 }
 
+static char	*get_var_value(char *arg, int *i, t_minishell *shell)
+{
+	int		k;
+	char	*var;
+	char	*val;
+
+	(*i)++;
+	k = *i;
+	while (arg[*i] && (ft_isalnum(arg[*i]) || arg[*i] == '_'))
+		(*i)++;
+	var = ft_strdup(arg + k);
+	var[*i - k] = '\0';
+	val = get_env_val(var, shell);
+	free(var);
+	return (val);
+}
+
+static char	*get_expansion_val(char *arg, int *i, t_minishell *shell)
+{
+	if (arg[*i + 1] == '?')
+	{
+		*i += 2;
+		return (ft_itoa(shell->exit_code));
+	}
+	if (ft_isalnum(arg[*i + 1]) || arg[*i + 1] == '_')
+		return (get_var_value(arg, i, shell));
+	return (NULL);
+}
+
+static char	*process_char(char *arg, int *i, int in_sq, t_minishell *shell)
+{
+	char	*val;
+
+	if (arg[*i] == '$' && !in_sq && (arg[*i + 1] == '?'
+			|| ft_isalnum(arg[*i + 1]) || arg[*i + 1] == '_'))
+		return (get_expansion_val(arg, i, shell));
+	val = malloc(2);
+	val[0] = arg[*i];
+	val[1] = '\0';
+	(*i)++;
+	return (val);
+}
+
 static char	*expand_variables(char *arg, t_minishell *shell)
 {
 	char	*new;
 	char	*val;
 	int		i;
-	int		k;
-	char	*var;
 	int		in_sq;
 	int		in_dq;
 
@@ -90,40 +140,39 @@ static char	*expand_variables(char *arg, t_minishell *shell)
 			in_sq = !in_sq;
 		else if (arg[i] == '\"' && !in_sq)
 			in_dq = !in_dq;
-		if (arg[i] == '$' && !in_sq && arg[i + 1] == '?')
-		{
-			val = ft_itoa(shell->exit_code);
-			i += 2;
-		}
-		else if (arg[i] == '$' && !in_sq && (ft_isalnum(
-					arg[i + 1]) || arg[i + 1] == '_'))
-		{
-			i++;
-			k = i;
-			while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
-				i++;
-			var = ft_strdup(arg + k);
-			var[i - k] = '\0';
-			val = get_env_val(var, shell);
-			free(var);
-		}
-		else
-		{
-			val = malloc(2);
-			val[0] = arg[i];
-			val[1] = '\0';
-			i++;
-		}
+		val = process_char(arg, &i, in_sq, shell);
 		ft_strlcat(new, val, 4096);
 		free(val);
 	}
 	return (new);
 }
 
-int	add_argument(t_command *cmd, char *arg, t_minishell *shell)
+static char	**resize_args(char **args, char *new_arg)
 {
 	int		i;
 	char	**new_args;
+
+	i = 0;
+	while (args && args[i])
+		i++;
+	new_args = malloc(sizeof(char *) * (i + 2));
+	if (!new_args)
+		return (NULL);
+	i = 0;
+	while (args && args[i])
+	{
+		new_args[i] = args[i];
+		i++;
+	}
+	new_args[i] = new_arg;
+	new_args[i + 1] = NULL;
+	if (args)
+		free(args);
+	return (new_args);
+}
+
+int	add_argument(t_command *cmd, char *arg, t_minishell *shell)
+{
 	char	*expanded;
 	char	*clean_arg;
 
@@ -134,33 +183,33 @@ int	add_argument(t_command *cmd, char *arg, t_minishell *shell)
 	free(expanded);
 	if (!clean_arg)
 		return (0);
-	i = 0;
-	while (cmd->args && cmd->args[i])
-		i++;
-	new_args = malloc(sizeof(char *) * (i + 2));
-	if (!new_args)
+	cmd->args = resize_args(cmd->args, clean_arg);
+	if (!cmd->args)
 	{
 		free(clean_arg);
 		return (0);
 	}
-	i = 0;
-	while (cmd->args && cmd->args[i])
-	{
-		new_args[i] = cmd->args[i];
-		i++;
-	}
-	new_args[i] = clean_arg;
-	new_args[i + 1] = NULL;
-	if (cmd->args)
-		free(cmd->args);
-	cmd->args = new_args;
 	return (1);
+}
+
+static void	append_redir(t_command *cmd, t_redir *new)
+{
+	t_redir	*last;
+
+	if (!cmd->redirs)
+		cmd->redirs = new;
+	else
+	{
+		last = cmd->redirs;
+		while (last->next)
+			last = last->next;
+		last->next = new;
+	}
 }
 
 int	add_redirection(t_command *cmd, t_redir_type type, char *file, t_minishell *shell)
 {
 	t_redir	*new;
-	t_redir	*last;
 	char	*expanded;
 	char	*clean_file;
 
@@ -175,14 +224,6 @@ int	add_redirection(t_command *cmd, t_redir_type type, char *file, t_minishell *
 	free(clean_file);
 	if (!new)
 		return (0);
-	if (!cmd->redirs)
-		cmd->redirs = new;
-	else
-	{
-		last = cmd->redirs;
-		while (last->next)
-			last = last->next;
-		last->next = new;
-	}
+	append_redir(cmd, new);
 	return (1);
 }

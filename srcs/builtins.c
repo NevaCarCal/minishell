@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 02:50:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 02:50:25 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 12:59:19 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,32 @@ void	builtin_echo(t_minishell *shell, char **args)
 	shell->exit_code = 0;
 }
 
-void	builtin_cd(t_minishell *shell, char **args)
+static void	cd_home(t_minishell *shell)
 {
 	int	i;
 
+	i = 0;
+	while (shell->envp[i] && ft_strncmp(shell->envp[i], "HOME=", 5) != 0)
+		i++;
+	if (shell->envp[i])
+	{
+		if (chdir(shell->envp[i] + 5) != 0)
+		{
+			perror("cd");
+			shell->exit_code = 1;
+		}
+		else
+			shell->exit_code = 0;
+	}
+	else
+	{
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		shell->exit_code = 1;
+	}
+}
+
+void	builtin_cd(t_minishell *shell, char **args)
+{
 	if (args[1] && args[2])
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
@@ -69,26 +91,7 @@ void	builtin_cd(t_minishell *shell, char **args)
 		return ;
 	}
 	if (!args[1])
-	{
-		i = 0;
-		while (shell->envp[i] && ft_strncmp(shell->envp[i], "HOME=", 5) != 0)
-			i++;
-		if (shell->envp[i])
-		{
-			if (chdir(shell->envp[i] + 5) != 0)
-			{
-				perror("cd");
-				shell->exit_code = 1;
-			}
-			else
-				shell->exit_code = 0;
-		}
-		else
-		{
-			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-			shell->exit_code = 1;
-		}
-	}
+		cd_home(shell);
 	else
 	{
 		if (chdir(args[1]) != 0)
@@ -240,10 +243,34 @@ static int	is_valid_identifier(char *str)
 	return (1);
 }
 
+static void	export_arg(t_minishell *shell, char *arg)
+{
+	int	idx;
+
+	if (!is_valid_identifier(arg))
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		shell->exit_code = 1;
+	}
+	else
+	{
+		idx = env_var_exists(arg, shell->envp);
+		if (idx >= 0)
+		{
+			if (ft_strchr(arg, '='))
+				shell->envp = update_env_var(shell->envp, idx, arg);
+		}
+		else
+			shell->envp = add_env_var(shell->envp, arg);
+		shell->exit_code = 0;
+	}
+}
+
 void	builtin_export(t_minishell *shell, char **args)
 {
 	int	i;
-	int	idx;
 
 	if (!args[1])
 	{
@@ -253,25 +280,7 @@ void	builtin_export(t_minishell *shell, char **args)
 	i = 1;
 	while (args[i])
 	{
-		if (!is_valid_identifier(args[i]))
-		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(args[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			shell->exit_code = 1;
-		}
-		else
-		{
-			idx = env_var_exists(args[i], shell->envp);
-			if (idx >= 0)
-			{
-				if (ft_strchr(args[i], '='))
-					shell->envp = update_env_var(shell->envp, idx, args[i]);
-			}
-			else
-				shell->envp = add_env_var(shell->envp, args[i]);
-			shell->exit_code = 0;
-		}
+		export_arg(shell, args[i]);
 		i++;
 	}
 }
@@ -288,18 +297,14 @@ static char	**remove_env_var(char **envp, int index)
 	new_env = malloc(sizeof(char *) * i);
 	if (!new_env)
 		return (envp);
-	i = 0;
+	i = -1;
 	j = 0;
-	while (envp[i])
+	while (envp[++i])
 	{
 		if (i != index)
-		{
-			new_env[j] = envp[i];
-			j++;
-		}
+			new_env[j++] = envp[i];
 		else
 			free(envp[i]);
-		i++;
 	}
 	new_env[j] = NULL;
 	free(envp);

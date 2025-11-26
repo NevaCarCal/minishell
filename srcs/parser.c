@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:55:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 02:45:41 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:01:45 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,12 @@ static int	handle_token(t_command **curr, char *token, char *line, int *i, t_min
 	return (1);
 }
 
-t_command	*parse_input(char *line, t_minishell *shell)
+static int	parse_loop(t_command *head, char *line, t_minishell *shell)
 {
-	t_command	*head;
 	t_command	*curr;
 	char		*token;
 	int			i;
 
-	head = new_command();
-	if (!head)
-		return (NULL);
 	curr = head;
 	i = 0;
 	while (1)
@@ -67,10 +63,24 @@ t_command	*parse_input(char *line, t_minishell *shell)
 		if (!handle_token(&curr, token, line, &i, shell))
 		{
 			free(token);
-			free_commands(head);
-			return (NULL);
+			return (0);
 		}
 		free(token);
+	}
+	return (1);
+}
+
+t_command	*parse_input(char *line, t_minishell *shell)
+{
+	t_command	*head;
+
+	head = new_command();
+	if (!head)
+		return (NULL);
+	if (!parse_loop(head, line, shell))
+	{
+		free_commands(head);
+		return (NULL);
 	}
 	return (head);
 }
