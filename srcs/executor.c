@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 02:15:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 13:08:36 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:18:34 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static void	exec_external(t_command *cmd, t_minishell *shell)
 	exit(1);
 }
 
-static void	exec_child(t_command *cmd, t_minishell *shell, int prev_fd, int *pip)
+static void	exec_child(t_command *cmd,
+	t_minishell *shell, int prev_fd, int *pip)
 {
 	if (prev_fd != -1)
 	{

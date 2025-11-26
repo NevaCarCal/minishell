@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:55:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 13:01:45 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:16:25 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static t_redir_type	get_redir_type(char *token)
 	return (REDIR_IN);
 }
 
-static int	handle_token(t_command **curr, char *token, char *line, int *i, t_minishell *shell)
+static int	handle_token(t_command **curr, char *token, t_parse_info *info)
 {
 	char			*next_tok;
 	t_redir_type	type;
@@ -36,31 +36,35 @@ static int	handle_token(t_command **curr, char *token, char *line, int *i, t_min
 	else if (is_operator(token[0]))
 	{
 		type = get_redir_type(token);
-		next_tok = get_next_token(line, i);
+		next_tok = get_next_token(info->line, info->i);
 		if (!next_tok)
 			return (0);
-		add_redirection(*curr, type, next_tok, shell);
+		add_redirection(*curr, type, next_tok, info->shell);
 		free(next_tok);
 	}
 	else
-		add_argument(*curr, token, shell);
+		add_argument(*curr, token, info->shell);
 	return (1);
 }
 
 static int	parse_loop(t_command *head, char *line, t_minishell *shell)
 {
-	t_command	*curr;
-	char		*token;
-	int			i;
+	t_command		*curr;
+	char			*token;
+	int				i;
+	t_parse_info	info;
 
 	curr = head;
 	i = 0;
+	info.line = line;
+	info.i = &i;
+	info.shell = shell;
 	while (1)
 	{
 		token = get_next_token(line, &i);
 		if (!token)
 			break ;
-		if (!handle_token(&curr, token, line, &i, shell))
+		if (!handle_token(&curr, token, &info))
 		{
 			free(token);
 			return (0);

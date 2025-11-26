@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:50:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 13:02:58 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:18:13 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,8 @@ static void	append_redir(t_command *cmd, t_redir *new)
 	}
 }
 
-int	add_redirection(t_command *cmd, t_redir_type type, char *file, t_minishell *shell)
+int	add_redirection(t_command *cmd, t_redir_type type,
+		char *file, t_minishell *shell)
 {
 	t_redir	*new;
 	char	*expanded;

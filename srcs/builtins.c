@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 02:50:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 12:59:19 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:17:38 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,8 @@ static int	env_var_exists(char *var, char **envp)
 		len++;
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], var, len) == 0 && (envp[i][len] == '=' || envp[i][len] == '\0'))
+		if (ft_strncmp(envp[i], var, len) == 0 && (
+				envp[i][len] == '=' || envp[i][len] == '\0'))
 			return (i);
 		i++;
 	}

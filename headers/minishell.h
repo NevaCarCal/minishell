@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:03 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 02:51:40 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:17:10 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ typedef struct s_parser_state
 	int		len;
 }	t_parser_state;
 
+typedef struct s_parse_info
+{
+	char		*line;
+	int			*i;
+	t_minishell	*shell;
+}	t_parse_info;
+
 typedef enum e_redir_type
 {
 	REDIR_IN,
@@ -63,7 +70,6 @@ typedef struct s_command
 	struct s_command	*next;
 }	t_command;
 
-/* Utils */
 /* Utils */
 char		*get_next_token(char *line, int *idx);
 int			is_operator(char c);
@@ -92,7 +98,6 @@ void		builtin_echo(t_minishell *shell, char **args);
 void		builtin_export(t_minishell *shell, char **args);
 void		builtin_unset(t_minishell *shell, char **args);
 
-/* Parser Utils */
 /* Parser Utils */
 void		process_token_char(char c, t_parser_state *state, char *dest);
 
