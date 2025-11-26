@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:03 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 14:00:42 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 21:55:46 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ char		*find_path(char *cmd, char **envp);
 void		process_line(char *line, t_minishell *shell);
 int			init_shell(t_minishell *shell, char **envp, int argc);
 void		loop_shell(t_minishell *shell);
+void		free_env(char **envp);
 
 /* Builtins */
 int			is_builtin(char *cmd);

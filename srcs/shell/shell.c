@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:59:37 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 14:01:36 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 21:55:53 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,21 @@ static char	**dup_envp(char **envp)
 	}
 	new_env[i] = NULL;
 	return (new_env);
+}
+
+void	free_env(char **envp)
+{
+	int	i;
+
+	i = 0;
+	if (!envp)
+		return ;
+	while (envp[i])
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
 }
 
 void	process_line(char *line, t_minishell *shell)

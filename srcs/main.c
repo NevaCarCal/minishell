@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:06 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 14:01:30 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/11/26 21:56:00 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ int	main(int argc, char **argv, char **envp)
 	setup_signals();
 	loop_shell(&shell);
 	rl_clear_history();
+	free_env(shell.envp);
 	return (shell.exit_code);
 }
