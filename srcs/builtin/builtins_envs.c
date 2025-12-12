@@ -6,12 +6,13 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:23:18 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 13:33:56 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/12/12 16:57:17 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Prints entire envp out to stdout */
 void	builtin_env(t_minishell *shell)
 {
 	int	i;
@@ -45,6 +46,8 @@ static int	is_numeric(char *str)
 	return (1);
 }
 
+/* If unhandled, things like 'exit 1 2' or 'exit abc' could segfault */
+/* It could also lead to unexpected exits when the shell shouldn't close */
 void	builtin_exit(t_minishell *shell, char **args)
 {
 	ft_putstr_fd("exit\n", 1);

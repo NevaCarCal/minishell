@@ -6,12 +6,13 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:25:49 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 13:58:22 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/12/12 17:01:55 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Creates a new envp without the var at index by allocating new memory */
 static char	**remove_env_var(char **envp, int index)
 {
 	int		i;

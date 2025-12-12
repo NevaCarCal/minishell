@@ -6,13 +6,13 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 02:50:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/12/12 16:15:20 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/12/12 16:30:00 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Check and return true if passed cmd is a builtin */
+/* Check and return true if passed cmd is a cmd builtin function */
 int	is_builtin(char *cmd)
 {
 	if (!cmd)

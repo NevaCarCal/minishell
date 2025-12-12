@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:25:14 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 13:33:58 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/12/12 17:00:23 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static char	**add_env_var(char **envp, char *var)
 	return (new_env);
 }
 
+/* Allows to update any var with an ID while handling memory automatically */
 static char	**update_env_var(char **envp, int idx, char *var)
 {
 	free(envp[idx]);
