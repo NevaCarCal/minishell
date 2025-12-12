@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 02:30:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/12/12 17:04:25 by ncarrera         ###   ########.fr       */
+/*   Updated: 2025/12/12 17:05:17 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	**get_env_paths(char **envp)
 }
 
 /* Check if a function is in the PATH. If not, retrieves path */
-/* Function then searches for the exec and retusn full path if found */
+/* Function then searches for the exec and returns full path if found */
 char	*find_path(char *cmd, char **envp)
 {
 	char	**paths;
