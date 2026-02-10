@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 02:15:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 13:54:45 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/10 22:47:45 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	exec_child(t_command *cmd,
 	}
 	if (!handle_redirections(cmd->redirs))
 		exit(1);
-	if (!cmd->args || !cmd->args[0] || !*cmd->args[0])
+	if (!cmd->args || !cmd->args[0])
 		exit(0);
 	if (is_builtin(cmd->args[0]))
 	{

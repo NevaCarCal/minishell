@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 02:30:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/12/12 17:05:17 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/10 22:43:42 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 static char	*try_find_in_paths(char *cmd, char **paths)
 {
-	char	*path;
-	int		i;
+	char		*path;
+	int			i;
+	struct stat	sb;
 
 	i = 0;
 	while (paths[i])
@@ -23,8 +24,11 @@ static char	*try_find_in_paths(char *cmd, char **paths)
 		path = join_path(paths[i], cmd);
 		if (path && access(path, X_OK) == 0)
 		{
-			ft_free_str_array(paths);
-			return (path);
+			if (stat(path, &sb) == 0 && !S_ISDIR(sb.st_mode))
+			{
+				ft_free_str_array(paths);
+				return (path);
+			}
 		}
 		free(path);
 		i++;

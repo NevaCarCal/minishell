@@ -6,17 +6,41 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:50:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 13:42:09 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/10 22:54:00 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*process_char(char *arg, int *i, int in_sq, t_minishell *shell)
+static void	update_quote_state(char c, int *quote)
+{
+	if (c == '\'' && *quote != 2)
+	{
+		if (*quote == 1)
+			*quote = 0;
+		else
+			*quote = 1;
+	}
+	else if (c == '\"' && *quote != 1)
+	{
+		if (*quote == 2)
+			*quote = 0;
+		else
+			*quote = 2;
+	}
+}
+
+static char	*process_char(char *arg, int *i, int quote, t_minishell *shell)
 {
 	char	*val;
 
-	if (arg[*i] == '$' && !in_sq && (arg[*i + 1] == '?'
+	if (arg[*i] == '$' && quote == 0 && (arg[*i + 1] == '\''
+			|| arg[*i + 1] == '\"'))
+	{
+		(*i)++;
+		return (ft_strdup(""));
+	}
+	if (arg[*i] == '$' && quote != 1 && (arg[*i + 1] == '?'
 			|| ft_isalnum(arg[*i + 1]) || arg[*i + 1] == '_'))
 		return (get_expansion_val(arg, i, shell));
 	val = malloc(2);
@@ -31,23 +55,18 @@ char	*expand_variables(char *arg, t_minishell *shell)
 	char	*new;
 	char	*val;
 	int		i;
-	int		in_sq;
-	int		in_dq;
+	int		quote;
 
 	new = malloc(4096);
 	if (!new)
 		return (NULL);
 	new[0] = '\0';
 	i = 0;
-	in_sq = 0;
-	in_dq = 0;
+	quote = 0;
 	while (arg[i])
 	{
-		if (arg[i] == '\'' && !in_dq)
-			in_sq = !in_sq;
-		else if (arg[i] == '\"' && !in_sq)
-			in_dq = !in_dq;
-		val = process_char(arg, &i, in_sq, shell);
+		update_quote_state(arg[i], &quote);
+		val = process_char(arg, &i, quote, shell);
 		ft_strlcat(new, val, 4096);
 		free(val);
 	}
@@ -86,6 +105,11 @@ int	add_argument(t_command *cmd, char *arg, t_minishell *shell)
 	expanded = expand_variables(arg, shell);
 	if (!expanded)
 		return (0);
+	if (expanded[0] == '\0')
+	{
+		free(expanded);
+		return (1);
+	}
 	clean_arg = remove_quotes(expanded);
 	free(expanded);
 	if (!clean_arg)

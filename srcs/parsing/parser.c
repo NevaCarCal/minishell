@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:55:00 by antigravity       #+#    #+#             */
-/*   Updated: 2026/02/10 22:31:42 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/10 23:02:29 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,26 @@ static int	parse_loop(t_command *head, char *line, t_minishell *shell)
 t_command	*parse_input(char *line, t_minishell *shell)
 {
 	t_command	*head;
+	t_command	*curr;
 
 	head = new_command();
 	if (!head)
 		return (NULL);
 	if (!parse_loop(head, line, shell))
 	{
+		free_commands(head);
+		return (NULL);
+	}
+	if (head && !head->args && !head->redirs && !head->next)
+	{
+		return (head);
+	}
+	curr = head;
+	while (curr->next)
+		curr = curr->next;
+	if (!curr->args && !curr->redirs)
+	{
+		shell->exit_code = 2;
 		free_commands(head);
 		return (NULL);
 	}
