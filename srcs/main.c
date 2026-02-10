@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:06 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 21:56:00 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/10 20:48:26 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int	g_signal = 0;
 
 void	handle_sigint(int sig)
 {
-	(void)sig;
-	g_signal = 130;
+	g_signal = 128 + sig;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);

@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:03 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 21:55:46 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/10 20:48:24 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,6 @@ void		builtin_echo(t_minishell *shell, char **args);
 void		builtin_export(t_minishell *shell, char **args);
 void		builtin_unset(t_minishell *shell, char **args);
 int			env_var_exists(char *var, char **envp);
-
-/* Parser Utils */
-void		process_token_char(char c, t_parser_state *state, char *dest);
 
 /* Executor Utils */
 char		*check_absolute_path(char *cmd);

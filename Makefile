@@ -6,7 +6,7 @@
 #    By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:06:14 by ncarrera          #+#    #+#              #
-#    Updated: 2025/11/26 14:00:57 by ncarrera         ###   ########.fr        #
+#    Updated: 2026/02/10 20:48:21 by ncarrera         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ $(LIBFT):
 
 %.o: %.c
 	@printf "$(Cyan)Compiling: $(Purple)$<$(NC)\n"
-	@$(CC) $(CFLAGS) -c $(LDFLAGS) $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 clean:
 	@printf "$(Red)Deleting: $(Purple)$(OBJS)$(NC)\n"
 	@rm -f $(OBJS)
