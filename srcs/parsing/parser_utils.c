@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:50:00 by antigravity       #+#    #+#             */
-/*   Updated: 2026/02/10 22:54:00 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 19:46:02 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*expand_variables(char *arg, t_minishell *shell)
 	return (new);
 }
 
-char	**resize_args(char **args, char *new_arg)
+static char	**resize_args(char **args, char *new_arg)
 {
 	int		i;
 	char	**new_args;

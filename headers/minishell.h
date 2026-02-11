@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:03 by ncarrera          #+#    #+#             */
-/*   Updated: 2026/02/11 13:04:50 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 19:46:13 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void		free_commands(t_command *cmds);
 char		*remove_quotes(char *arg);
 char		*get_expansion_val(char *arg, int *i, t_minishell *shell);
 char		*expand_variables(char *arg, t_minishell *shell);
-char		**resize_args(char **args, char *new_arg);
 
 /* Executor */
 void		execute_command(t_minishell *shell, t_command *cmd);
@@ -96,7 +95,6 @@ void		exec_single_builtin(t_command *cmd, t_minishell *shell);
 char		*find_path(char *cmd, char **envp);
 
 /* Shell */
-void		process_line(char *line, t_minishell *shell);
 int			init_shell(t_minishell *shell, char **envp, int argc);
 void		loop_shell(t_minishell *shell);
 void		free_env(char **envp);
@@ -110,13 +108,11 @@ void		builtin_env(t_minishell *shell);
 void		builtin_exit(t_minishell *shell, char **args);
 void		builtin_echo(t_minishell *shell, char **args);
 void		builtin_export(t_minishell *shell, char **args);
-void		builtin_unset(t_minishell *shell, char **args);
 int			env_var_exists(char *var, char **envp);
 
 /* Executor Utils */
 char		*check_absolute_path(char *cmd);
 void		handle_exec_error(char *cmd, t_minishell *shell);
-void		wait_for_child(pid_t pid, t_minishell *shell);
 char		*join_path(char *dir, char *cmd);
 int			handle_redirections(t_redir *redirs);
 

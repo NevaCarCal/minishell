@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:59:37 by ncarrera          #+#    #+#             */
-/*   Updated: 2026/02/11 14:56:59 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 19:56:07 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	free_env(char **envp)
 	free(envp);
 }
 
-void	process_line(char *line, t_minishell *shell)
+static void	process_line(char *line, t_minishell *shell)
 {
 	t_command	*cmds;
 
@@ -86,7 +86,7 @@ void	loop_shell(t_minishell *shell)
 	while (1)
 	{
 		line = readline("\001\033[1;35m\002minishell"
-			"\001\033[1;36m\002$ \001\033[0m\002");
+				"\001\033[1;36m\002$ \001\033[0m\002");
 		if (!line)
 		{
 			printf("exit\n");

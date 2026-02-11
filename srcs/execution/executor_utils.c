@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:00:00 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 13:00:09 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 19:43:49 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,6 @@ void	handle_exec_error(char *cmd, t_minishell *shell)
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(": command not found\n", 2);
 	exit(127);
-}
-
-void	wait_for_child(pid_t pid, t_minishell *shell)
-{
-	int	status;
-
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		shell->exit_code = WEXITSTATUS(status);
 }
 
 char	*join_path(char *dir, char *cmd)

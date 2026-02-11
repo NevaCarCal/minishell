@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:25:49 by ncarrera          #+#    #+#             */
-/*   Updated: 2026/02/10 23:24:41 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 19:44:24 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	**remove_env_var(char **envp, int index)
 	return (new_env);
 }
 
-void	builtin_unset(t_minishell *shell, char **args)
+static void	builtin_unset(t_minishell *shell, char **args)
 {
 	int	i;
 	int	idx;

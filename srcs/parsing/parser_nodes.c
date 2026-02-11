@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:35:00 by antigravity       #+#    #+#             */
-/*   Updated: 2025/11/26 02:45:39 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 19:46:45 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_command	*new_command(void)
 	return (cmd);
 }
 
-void	free_redirs(t_redir *redir)
+static void	free_redirs(t_redir *redir)
 {
 	t_redir	*tmp;
 
