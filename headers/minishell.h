@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:03 by ncarrera          #+#    #+#             */
-/*   Updated: 2026/02/11 19:46:13 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 20:42:56 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,6 @@ typedef struct s_minishell
 	char	**envp;
 	int		exit_code;
 }	t_minishell;
-
-typedef struct s_parser_state
-{
-	int		in_quote;
-	char	quote;
-	int		len;
-}	t_parser_state;
 
 typedef struct s_parse_info
 {
@@ -84,6 +77,7 @@ void		free_commands(t_command *cmds);
 char		*remove_quotes(char *arg);
 char		*get_expansion_val(char *arg, int *i, t_minishell *shell);
 char		*expand_variables(char *arg, t_minishell *shell);
+void		ft_update_quote(char c, char *state);
 
 /* Executor */
 void		execute_command(t_minishell *shell, t_command *cmd);

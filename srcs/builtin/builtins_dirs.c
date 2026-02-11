@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 02:50:00 by antigravity       #+#    #+#             */
-/*   Updated: 2026/02/11 19:53:20 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 20:39:50 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,8 @@ static void	cd_home(t_minishell *shell)
 {
 	int	i;
 
-	i = 0;
-	while (shell->envp[i] && ft_strncmp(shell->envp[i], "HOME=", 5) != 0)
-		i++;
-	if (shell->envp[i])
+	i = env_var_exists("HOME", shell->envp);
+	if (i != -1)
 	{
 		if (chdir(shell->envp[i] + 5) != 0)
 		{
@@ -88,7 +86,7 @@ void	builtin_cd(t_minishell *shell, char **args)
 {
 	if (!args[1])
 		cd_home(shell);
-	if (args[1] && args[2])
+	else if (args[1] && args[2])
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		shell->exit_code = 1;

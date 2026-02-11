@@ -6,31 +6,24 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:50:00 by antigravity       #+#    #+#             */
-/*   Updated: 2026/02/11 19:46:02 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 20:17:34 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	update_quote_state(char c, int *quote)
+void	ft_update_quote(char c, char *state)
 {
-	if (c == '\'' && *quote != 2)
+	if (c == '\'' || c == '\"')
 	{
-		if (*quote == 1)
-			*quote = 0;
-		else
-			*quote = 1;
-	}
-	else if (c == '\"' && *quote != 1)
-	{
-		if (*quote == 2)
-			*quote = 0;
-		else
-			*quote = 2;
+		if (*state == 0)
+			*state = c;
+		else if (*state == c)
+			*state = 0;
 	}
 }
 
-static char	*process_char(char *arg, int *i, int quote, t_minishell *shell)
+static char	*process_char(char *arg, int *i, char quote, t_minishell *shell)
 {
 	char	*val;
 
@@ -40,7 +33,7 @@ static char	*process_char(char *arg, int *i, int quote, t_minishell *shell)
 		(*i)++;
 		return (ft_strdup(""));
 	}
-	if (arg[*i] == '$' && quote != 1 && (arg[*i + 1] == '?'
+	if (arg[*i] == '$' && quote != '\'' && (arg[*i + 1] == '?'
 			|| ft_isalnum(arg[*i + 1]) || arg[*i + 1] == '_'))
 		return (get_expansion_val(arg, i, shell));
 	val = malloc(2);
@@ -55,7 +48,7 @@ char	*expand_variables(char *arg, t_minishell *shell)
 	char	*new;
 	char	*val;
 	int		i;
-	int		quote;
+	char	quote;
 
 	new = malloc(4096);
 	if (!new)
@@ -65,7 +58,7 @@ char	*expand_variables(char *arg, t_minishell *shell)
 	quote = 0;
 	while (arg[i])
 	{
-		update_quote_state(arg[i], &quote);
+		ft_update_quote(arg[i], &quote);
 		val = process_char(arg, &i, quote, shell);
 		ft_strlcat(new, val, 4096);
 		free(val);

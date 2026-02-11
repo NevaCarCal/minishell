@@ -6,25 +6,20 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:35:59 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 13:39:36 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 20:17:45 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	should_copy_char(char c, int *in_quote, char *quote)
+static int	should_copy_char(char c, char *quote)
 {
-	if ((c == '\'' || c == '\"') && !*in_quote)
-	{
-		*in_quote = 1;
-		*quote = c;
+	char	prev_quote;
+
+	prev_quote = *quote;
+	ft_update_quote(c, quote);
+	if (*quote != prev_quote)
 		return (0);
-	}
-	else if (*in_quote && c == *quote)
-	{
-		*in_quote = 0;
-		return (0);
-	}
 	return (1);
 }
 
@@ -33,7 +28,6 @@ char	*remove_quotes(char *arg)
 	char	*new;
 	int		i;
 	int		j;
-	int		in_quote;
 	char	quote;
 
 	new = malloc(ft_strlen(arg) + 1);
@@ -41,11 +35,10 @@ char	*remove_quotes(char *arg)
 		return (NULL);
 	i = 0;
 	j = 0;
-	in_quote = 0;
 	quote = 0;
 	while (arg[i])
 	{
-		if (should_copy_char(arg[i], &in_quote, &quote))
+		if (should_copy_char(arg[i], &quote))
 			new[j++] = arg[i];
 		i++;
 	}
