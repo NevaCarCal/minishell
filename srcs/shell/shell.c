@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:59:37 by ncarrera          #+#    #+#             */
-/*   Updated: 2026/02/11 14:25:19 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 14:56:59 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int	init_shell(t_minishell *shell, char **envp, int argc)
 void	loop_shell(t_minishell *shell)
 {
 	char	*line;
-	char	*cline;
 
 	while (1)
 	{
@@ -93,7 +92,7 @@ void	loop_shell(t_minishell *shell)
 			printf("exit\n");
 			break ;
 		}
-		process_line(cline, shell);
+		process_line(line, shell);
 		if (g_signal != 0)
 		{
 			shell->exit_code = g_signal;
