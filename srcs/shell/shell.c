@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:59:37 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 21:55:53 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 14:25:19 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	init_shell(t_minishell *shell, char **envp, int argc)
 		return (1);
 	}
 	shell->exit_code = 0;
-	shell->exit_loop = 0;
 	shell->envp = dup_envp(envp);
 	if (!shell->envp)
 		return (1);
@@ -83,23 +82,22 @@ int	init_shell(t_minishell *shell, char **envp, int argc)
 void	loop_shell(t_minishell *shell)
 {
 	char	*line;
+	char	*cline;
 
 	while (1)
 	{
 		line = readline("\001\033[1;35m\002minishell"
-				"\001\033[1;36m\002$ \001\033[0m\002");
+			"\001\033[1;36m\002$ \001\033[0m\002");
 		if (!line)
 		{
 			printf("exit\n");
 			break ;
 		}
-		process_line(line, shell);
+		process_line(cline, shell);
 		if (g_signal != 0)
 		{
 			shell->exit_code = g_signal;
 			g_signal = 0;
 		}
-		if (shell->exit_loop)
-			break ;
 	}
 }

@@ -6,13 +6,13 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:41:17 by ncarrera          #+#    #+#             */
-/*   Updated: 2025/11/26 13:42:17 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 12:17:08 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	append_redir(t_command *cmd, t_redir *new)
+static void	append_redirection(t_command *cmd, t_redir *new)
 {
 	t_redir	*last;
 
@@ -45,6 +45,6 @@ int	add_redirection(t_command *cmd, t_redir_type type,
 	free(clean_file);
 	if (!new)
 		return (0);
-	append_redir(cmd, new);
+	append_redirection(cmd, new);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:03 by ncarrera          #+#    #+#             */
-/*   Updated: 2026/02/10 20:48:24 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/11 13:04:50 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_minishell
 {
 	char	**envp;
 	int		exit_code;
-	int		exit_loop;
 }	t_minishell;
 
 typedef struct s_parser_state
@@ -53,7 +52,7 @@ typedef enum e_redir_type
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_APPEND,
-	REDIR_HEREDOC
+	REDIR_HEREDOC,
 }	t_redir_type;
 
 typedef struct s_redir
