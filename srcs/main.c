@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:06 by ncarrera          #+#    #+#             */
-/*   Updated: 2026/02/11 19:47:01 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/12 15:53:40 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_signal = 0;
 
-static void	handle_sigint(int sig)
+static void	handle_sig_interrupt(int sig)
 {
 	g_signal = 128 + sig;
 	write(1, "\n", 1);
@@ -25,7 +25,7 @@ static void	handle_sigint(int sig)
 
 static void	setup_signals(void)
 {
-	signal(SIGINT, handle_sigint);
+	signal(SIGINT, handle_sig_interrupt);
 	signal(SIGQUIT, SIG_IGN);
 }
 

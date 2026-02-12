@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:35:59 by ncarrera          #+#    #+#             */
-/*   Updated: 2026/02/11 20:17:45 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/12 16:59:43 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ static char	*get_var_value(char *arg, int *i, t_minishell *shell)
 	k = *i;
 	while (arg[*i] && (ft_isalnum(arg[*i]) || arg[*i] == '_'))
 		(*i)++;
-	var = ft_strdup(arg + k);
-	var[*i - k] = '\0';
+	var = ft_substr(arg, k, *i - k);
 	val = get_env_val(var, shell);
 	free(var);
 	return (val);

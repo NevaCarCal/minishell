@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 13:07:03 by ncarrera          #+#    #+#             */
-/*   Updated: 2026/02/11 20:42:56 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/12 16:24:54 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int			add_argument(t_command *cmd, char *arg, t_minishell *shell);
 int			add_redirection(t_command *cmd, t_redir_type type,
 				char *file, t_minishell *shell);
 t_redir		*new_redir(t_redir_type type, char *file);
+char		*append_val(char *new, char *val);
 
 /* Parser */
 t_command	*parse_input(char *line, t_minishell *shell);

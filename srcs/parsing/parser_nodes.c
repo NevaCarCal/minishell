@@ -6,11 +6,29 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:35:00 by antigravity       #+#    #+#             */
-/*   Updated: 2026/02/11 19:46:45 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/12 16:24:19 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_redir	*new_redir(t_redir_type type, char *file)
+{
+	t_redir	*redir;
+
+	redir = malloc(sizeof(t_redir));
+	if (!redir)
+		return (NULL);
+	redir->type = type;
+	redir->file = ft_strdup(file);
+	if (!redir->file)
+	{
+		free(redir);
+		return (NULL);
+	}
+	redir->next = NULL;
+	return (redir);
+}
 
 t_command	*new_command(void)
 {
@@ -53,20 +71,12 @@ void	free_commands(t_command *cmds)
 	}
 }
 
-t_redir	*new_redir(t_redir_type type, char *file)
+char	*append_val(char *new, char *val)
 {
-	t_redir	*redir;
+	char	*tmp;
 
-	redir = malloc(sizeof(t_redir));
-	if (!redir)
-		return (NULL);
-	redir->type = type;
-	redir->file = ft_strdup(file);
-	if (!redir->file)
-	{
-		free(redir);
-		return (NULL);
-	}
-	redir->next = NULL;
-	return (redir);
+	tmp = ft_strjoin(new, val);
+	free(new);
+	free(val);
+	return (tmp);
 }

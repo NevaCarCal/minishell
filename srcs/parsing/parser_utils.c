@@ -6,7 +6,7 @@
 /*   By: ncarrera <ncarrera@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 01:50:00 by antigravity       #+#    #+#             */
-/*   Updated: 2026/02/11 20:17:34 by ncarrera         ###   ########.fr       */
+/*   Updated: 2026/02/12 17:14:09 by ncarrera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,23 @@ char	*expand_variables(char *arg, t_minishell *shell)
 	int		i;
 	char	quote;
 
-	new = malloc(4096);
+	new = ft_strdup("");
 	if (!new)
 		return (NULL);
-	new[0] = '\0';
 	i = 0;
 	quote = 0;
 	while (arg[i])
 	{
 		ft_update_quote(arg[i], &quote);
 		val = process_char(arg, &i, quote, shell);
-		ft_strlcat(new, val, 4096);
-		free(val);
+		if (!val)
+		{
+			free(new);
+			return (NULL);
+		}
+		new = append_val(new, val);
+		if (!new)
+			return (NULL);
 	}
 	return (new);
 }
